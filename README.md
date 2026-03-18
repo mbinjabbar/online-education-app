@@ -14,7 +14,6 @@
 
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
 - [Getting Started](#-getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -50,31 +49,6 @@
 | **Auth** | JSON Web Tokens (JWT) |
 | **File Storage** | Multer + Supabase |
 | **Security** | bcrypt |
-
----
-
-## 📁 Project Structure
-
-```
-online-education-app/
-├── frontend/               # Angular application
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── components/
-│   │   │   ├── services/
-│   │   │   ├── guards/
-│   │   │   └── models/
-│   │   └── environments/
-│   └── package.json
-│
-└── backend/                # Node.js + Express API
-    ├── controllers/
-    ├── routes/
-    ├── middleware/
-    ├── models/
-    ├── config/
-    └── package.json
-```
 
 ---
 
@@ -147,25 +121,6 @@ SUPABASE_KEY=your_supabase_anon_key
 ```
 
 > ⚠️ Never commit your `.env` file. Add it to `.gitignore`.
-
----
-
-## 📡 API Overview
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|:---:|
-| `POST` | `/api/auth/register` | Register a new user | ❌ |
-| `POST` | `/api/auth/login` | Login and receive JWT | ❌ |
-| `GET` | `/api/profile` | Get user profile | ✅ |
-| `PUT` | `/api/profile` | Update user profile | ✅ |
-| `GET` | `/api/subjects` | List all subjects | ✅ |
-| `POST` | `/api/subjects` | Create a subject | ✅ |
-| `PUT` | `/api/subjects/:id` | Update a subject | ✅ |
-| `DELETE` | `/api/subjects/:id` | Delete a subject | ✅ |
-| `POST` | `/api/videos/upload` | Upload a video | ✅ |
-| `GET` | `/api/videos/:subjectId` | Get videos by subject | ✅ |
-
-> Full API documentation coming soon.
 
 ---
 
