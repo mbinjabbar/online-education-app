@@ -1,0 +1,229 @@
+<div class="px-4 sm:px-6 py-8 sm:py-10">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="fade-up mb-6 sm:mb-8" style="animation-delay: 0.05s">
+
+      <div class="flex items-start sm:items-end justify-between mb-5 gap-4">
+        <div>
+          <p class="text-xs uppercase tracking-widest text-[#a0a0c0] dark:text-[#4a4a6a] font-light mb-1">Browse all</p>
+          <h2 class="font-lora text-2xl sm:text-3xl text-[#1a1a2e] dark:text-white">Subjects</h2>
+          <div class="mt-3 w-10 h-0.5 bg-[#6B7FFF] rounded-full"></div>
+        </div>
+
+        <button
+          (click)="openCreateModal()"
+          class="flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-sm font-medium bg-[#6B7FFF] hover:bg-[#4A5FE0] text-white shadow-[0_2px_16px_rgba(107,127,255,0.35)] transition-all duration-150 cursor-pointer shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          <span class="hidden xs:inline sm:inline">New Subject</span>
+          <span class="xs:hidden sm:hidden">New</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+
+        <div class="relative group w-full sm:w-auto sm:shrink-0">
+          <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[#c0c0d8] group-focus-within:text-[#6B7FFF] transition-colors duration-200">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0Z" />
+            </svg>
+          </div>
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            placeholder="Search subjects..."
+            class="w-full sm:w-52 pl-9 pr-8 py-2 rounded-xl text-[13px] bg-white dark:bg-[#13131f] border border-[#e8e8f0] dark:border-[#1e1e2e] text-[#1a1a2e] dark:text-white placeholder-[#c0c0d8] dark:placeholder-[#3a3a5a] outline-none focus:border-[#6B7FFF] focus:shadow-[0_0_0_3px_rgba(107,127,255,0.10)] transition-all duration-200" />
+          @if (searchQuery) {
+            <button (click)="clearSearch()"
+              class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#bbb] hover:text-[#6B7FFF] transition-colors cursor-pointer">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </button>
+          }
+        </div>
+
+        <div class="hidden sm:block w-px h-5 bg-[#e8e8f0] dark:bg-[#1e1e2e] shrink-0"></div>
+        <div class="block sm:hidden h-px w-full bg-[#e8e8f0] dark:bg-[#1e1e2e]"></div>
+
+        <div class="flex items-center gap-1 overflow-x-auto pb-0.5 sm:pb-0 scrollbar-hide">
+          @for (option of sortOptions; track option.value) {
+            <button
+              (click)="setSort(option.value)"
+              class="px-3.5 py-1.5 rounded-lg text-[12px] font-medium transition-all duration-150 cursor-pointer whitespace-nowrap shrink-0"
+              [class]="activeSort === option.value
+                ? 'bg-[#6B7FFF]/10 text-[#6B7FFF] dark:bg-[#6B7FFF]/15'
+                : 'text-[#8888aa] dark:text-[#5a5a7a] hover:bg-[#f4f4f8] dark:hover:bg-[#1e1e2e] hover:text-[#6B7FFF]'">
+              {{ option.label }}
+            </button>
+          }
+        </div>
+
+      </div>
+    </div>
+
+    @if (isLoading) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        @for (i of [1,2,3,4,5,6]; track i) {
+          <app-subject-skeleton />
+        }
+      </div>
+    }
+
+    @if (!isLoading) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+
+        @for (subject of subjects; track subject.id; let i = $index) {
+          <div class="fade-up-card" [style.animation-delay]="(0.1 + i * 0.08) + 's'">
+            <app-subjects-card
+              [subject]="subject"
+              (editSubject)="onEditSubject($event)"
+              (deleteSubject)="onDeleteSubject($event)" />
+          </div>
+        } @empty {
+          @if (searchQuery) {
+            <div class="col-span-1 sm:col-span-3 flex flex-col items-center py-16 text-center">
+              <svg class="w-10 h-10 text-[#d0d0e8] dark:text-[#2a2a3a] mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0Z" />
+              </svg>
+              <p class="text-[13px] text-[#a0a0c0] dark:text-[#4a4a6a]">No subjects found for "<span class="text-[#6B7FFF]">{{ searchQuery }}</span>"</p>
+              <button (click)="clearSearch()" class="mt-3 text-[12px] text-[#6B7FFF] hover:underline cursor-pointer">Clear search</button>
+            </div>
+          }
+        }
+
+        @if (!searchQuery) {
+          <div class="fade-up-card" [style.animation-delay]="(0.1 + subjects.length * 0.08) + 's'">
+            <button
+              (click)="openCreateModal()"
+              class="w-full h-full min-h-45 sm:min-h-50 rounded-2xl border-2 border-dashed border-[#d0d0e8] dark:border-[#2a2a3a] hover:border-[#6B7FFF] dark:hover:border-[#6B7FFF] bg-white dark:bg-[#13131f] hover:bg-[#F0F2FF]/50 dark:hover:bg-[#6B7FFF]/5 flex flex-col items-center justify-center gap-3 transition-all duration-200 group cursor-pointer">
+              <div class="w-12 h-12 rounded-2xl bg-[#F0F2FF] dark:bg-[#1e1e2e] group-hover:bg-[#6B7FFF] flex items-center justify-center transition-all duration-200 shadow-sm">
+                <svg class="w-6 h-6 text-[#6B7FFF] group-hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </div>
+              <div class="text-center">
+                <p class="text-sm font-medium text-[#6B7FFF] group-hover:text-[#4A5FE0] dark:text-[#6B7FFF] transition-colors">Create Subject</p>
+                <p class="text-xs text-[#a0a0c0] dark:text-[#4a4a6a] mt-0.5">Add a new subject</p>
+              </div>
+            </button>
+          </div>
+        }
+
+      </div>
+    }
+
+  </div>
+</div>
+
+
+@if (showModal) {
+<div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:px-4" (click)="closeModal()">
+  <div class="absolute inset-0 bg-[#1a1a2e]/40 dark:bg-black/60 backdrop-blur-sm"></div>
+
+  <div class="relative w-full sm:max-w-lg bg-white dark:bg-[#13131f] rounded-t-2xl sm:rounded-2xl border border-[#e8e8f0] dark:border-[#1e1e2e] shadow-[0_8px_40px_rgba(107,127,255,0.15)] overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[90vh]"
+    (click)="$event.stopPropagation()">
+
+    <div class="h-0.5 bg-linear-to-r from-[#6B7FFF] via-[#8b9de8] to-[#c5cff7] shrink-0"></div>
+
+    <div class="flex items-center justify-between px-6 py-5 border-b border-[#e8e8f0] dark:border-[#1e1e2e] shrink-0">
+      <div>
+        <h3 class="font-lora text-lg text-[#1a1a2e] dark:text-white">{{ modalTitle }}</h3>
+        <p class="text-xs text-[#a0a0c0] dark:text-[#4a4a6a] mt-0.5">
+          @if (isDeleteMode) { This action cannot be undone }
+          @else if (isEditMode) { Update subject details }
+          @else { Add a new subject }
+        </p>
+      </div>
+      <button (click)="closeModal()" class="w-8 h-8 rounded-lg flex items-center justify-center border border-[#e8e8f0] dark:border-[#1e1e2e] text-[#a0a0c0] hover:text-[#1a1a2e] dark:hover:text-white hover:bg-[#F0F2FF] dark:hover:bg-[#1e1e2e] transition-all cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="overflow-y-auto flex-1">
+
+      @if (isDeleteMode) {
+      <div class="px-6 py-6">
+        <div class="flex items-center gap-4 p-4 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 mb-5">
+          <div class="w-10 h-10 rounded-xl overflow-hidden bg-[#e8e8f0] dark:bg-[#1e1e2e] shrink-0">
+            <img [src]="selectedSubject?.bannerUrl" [alt]="selectedSubject?.title" class="w-full h-full object-cover" />
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold text-[#1a1a2e] dark:text-white font-lora truncate">{{ selectedSubject?.title | titlecase }}</p>
+          </div>
+        </div>
+        <p class="text-sm text-[#7a7a9a] dark:text-[#5a5a7a] mb-6">
+          Are you sure you want to delete <span class="font-medium text-[#1a1a2e] dark:text-white">{{ selectedSubject?.title | titlecase }}</span>? This cannot be undone.
+        </p>
+        @if (errorMessage) { <p class="text-xs text-red-500 mb-4">{{ errorMessage }}</p> }
+        <div class="flex gap-3">
+          <button (click)="closeModal()" class="flex-1 py-2.5 rounded-xl border border-[#e8e8f0] dark:border-[#1e1e2e] text-sm text-[#1a1a2e] dark:text-white hover:bg-[#fafafe] dark:hover:bg-[#1e1e2e] transition-colors cursor-pointer">Cancel</button>
+          <button (click)="confirmDelete()" [disabled]="isSaving" class="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 disabled:opacity-60 text-white text-sm font-medium transition-colors cursor-pointer">
+            {{ isSaving ? 'Deleting…' : 'Delete Subject' }}
+          </button>
+        </div>
+      </div>
+      }
+
+      @else {
+      <div class="px-6 py-6 flex flex-col gap-5">
+
+        <div>
+          <label class="block text-xs uppercase tracking-widest text-[#a0a0c0] dark:text-[#4a4a6a] font-light mb-2">Title</label>
+          <input [(ngModel)]="form.title" type="text" placeholder="e.g. Mathematics"
+            class="w-full px-4 py-2.5 rounded-xl border border-[#e8e8f0] dark:border-[#1e1e2e] bg-[#fafafe] dark:bg-[#0f0f1a] text-sm text-[#1a1a2e] dark:text-white placeholder-[#c0c0d8] dark:placeholder-[#3a3a5a] focus:outline-none focus:border-[#6B7FFF] focus:ring-1 focus:ring-[#6B7FFF]/30 transition-all" />
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-widest text-[#a0a0c0] dark:text-[#4a4a6a] font-light mb-2">Description</label>
+          <textarea [(ngModel)]="form.description" rows="2" placeholder="Brief description…"
+            class="w-full px-4 py-2.5 rounded-xl border border-[#e8e8f0] dark:border-[#1e1e2e] bg-[#fafafe] dark:bg-[#0f0f1a] text-sm text-[#1a1a2e] dark:text-white placeholder-[#c0c0d8] dark:placeholder-[#3a3a5a] focus:outline-none focus:border-[#6B7FFF] focus:ring-1 focus:ring-[#6B7FFF]/30 transition-all resize-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-widest text-[#a0a0c0] dark:text-[#4a4a6a] font-light mb-2">Subject Banner</label>
+          <label class="flex items-center gap-3 px-4 py-2.5 rounded-xl border border-dashed border-[#c0c0d8] dark:border-[#3a3a5a] hover:border-[#6B7FFF] bg-[#fafafe] dark:bg-[#0f0f1a] cursor-pointer transition-all">
+            <svg class="w-4 h-4 text-[#6B7FFF] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+            </svg>
+            <span class="text-sm text-[#7a7a9a] dark:text-[#5a5a7a]">
+              @if (bannerUploading) { <span class="text-[#6B7FFF]">Uploading…</span> }
+              @else if (form.bannerUrl) { <span class="text-green-500">Banner uploaded ✓</span> }
+              @else { Choose image }
+            </span>
+            <input type="file" accept="image/*" class="hidden" (change)="onBannerFileSelected($event)" />
+          </label>
+          @if (form.bannerUrl) {
+          <div class="mt-2 h-20 rounded-xl overflow-hidden border border-[#e8e8f0] dark:border-[#1e1e2e]">
+            <img [src]="form.bannerUrl" alt="Banner preview" class="w-full h-full object-cover" />
+          </div>
+          }
+        </div>
+
+        @if (errorMessage) {
+        <p class="text-xs text-red-500 -mt-2">{{ errorMessage }}</p>
+        }
+
+        <div class="flex gap-3 pt-1">
+          <button (click)="closeModal()" type="button"
+            class="flex-1 py-2.5 rounded-xl border border-[#e8e8f0] dark:border-[#1e1e2e] text-sm text-[#1a1a2e] dark:text-white hover:bg-[#fafafe] dark:hover:bg-[#1e1e2e] transition-colors cursor-pointer">
+            Cancel
+          </button>
+          <button (click)="onSubmit()" type="button" [disabled]="isSaving || isUploading || !form.title.trim()"
+            class="flex-1 py-2.5 rounded-xl bg-[#6B7FFF] hover:bg-[#4A5FE0] disabled:opacity-60 text-white text-sm font-medium transition-colors shadow-[0_2px_12px_rgba(107,127,255,0.35)] cursor-pointer">
+            @if (isSaving) { Saving… }
+            @else if (isUploading) { Uploading… }
+            @else if (isEditMode) { Save Changes }
+            @else { Create Subject }
+          </button>
+        </div>
+
+      </div>
+      }
+    </div>
+  </div>
+</div>
+}

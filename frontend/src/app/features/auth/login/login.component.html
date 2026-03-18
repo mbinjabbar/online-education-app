@@ -1,0 +1,119 @@
+<div class="flex items-center justify-center px-6 py-10">
+  <div class="relative w-full max-w-105">
+
+    <div class="mb-8 px-1 fade-up">
+      <div class="flex items-center justify-center gap-2.5 mb-8">
+        <div class="w-8 h-8 rounded-lg bg-[#6B7FFF] flex items-center justify-center">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.966 8.966 0 0 0-6 2.292m0-14.25v14.25" />
+          </svg>
+        </div>
+        <h2 class="font-semibold tracking-[0.12em] uppercase text-[#1A1A2E] dark:text-white">LOGIN</h2>
+      </div>
+    </div>
+
+    <div class="bg-white/80 dark:bg-[#13131f]/80 backdrop-blur-xl rounded-3xl border border-white dark:border-[#1e1e2e] shadow-[0_8px_48px_rgba(0,0,0,0.06)] px-8 py-9 fade-up delay-1">
+      <form [formGroup]="form" (ngSubmit)="onLogin()" class="space-y-5">
+
+        <div class="fade-up delay-2">
+          <label class="block text-[11px] font-semibold uppercase tracking-widest text-[#999] dark:text-[#5a5a7a] mb-2">Email</label>
+          <div class="relative group">
+            <div class="absolute left-4 top-1/2 -translate-y-1/2 text-[#bbb] group-focus-within:text-[#6B7FFF] transition-colors duration-200">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
+              </svg>
+            </div>
+            <input type="text" formControlName="email" placeholder="you@example.com"
+              class="w-full bg-[#FAFAFA] dark:bg-[#1a1a2e] border border-[#EBEBEB] dark:border-[#1e1e2e] rounded-xl pl-10 pr-4 py-3.5 text-[14px] text-[#1A1A2E] dark:text-white placeholder-[#C8C8C8] dark:placeholder-[#3a3a5a] outline-none focus:border-[#6B7FFF] focus:bg-white dark:focus:bg-[#1a1a2e] focus:shadow-[0_0_0_3px_rgba(107,127,255,0.12)] transition-all duration-200" />
+          </div>
+          @if (email.invalid && email.touched) {
+            <div class="mt-1.5 flex items-center gap-1">
+              <div class="w-1 h-1 rounded-full bg-rose-400"></div>
+              @if (email.errors?.['required']) {
+                <small class="text-[11px] text-rose-400">Email is required</small>
+              } @else if (email.errors?.['invalidEmail']) {
+                <small class="text-[11px] text-rose-400">Enter a valid email address</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="fade-up delay-3">
+          <div class="flex items-center justify-between mb-2">
+            <label class="block text-[11px] font-semibold uppercase tracking-widest text-[#999] dark:text-[#5a5a7a]">Password</label>
+            <a href="#" class="text-[11px] text-[#6B7FFF] hover:text-[#4A5FE0] font-medium transition-colors">Forgot?</a>
+          </div>
+          <div class="relative group">
+            <div class="absolute left-4 top-1/2 -translate-y-1/2 text-[#bbb] group-focus-within:text-[#6B7FFF] transition-colors duration-200">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25z"/>
+              </svg>
+            </div>
+            <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="••••••••"
+              class="w-full bg-[#FAFAFA] dark:bg-[#1a1a2e] border border-[#EBEBEB] dark:border-[#1e1e2e] rounded-xl pl-10 pr-10 py-3.5 text-[14px] text-[#1A1A2E] dark:text-white placeholder-[#C8C8C8] dark:placeholder-[#3a3a5a] outline-none focus:border-[#6B7FFF] focus:bg-white dark:focus:bg-[#1a1a2e] focus:shadow-[0_0_0_3px_rgba(107,127,255,0.12)] transition-all duration-200" />
+            <button type="button" (click)="showPassword = !showPassword"
+              class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#bbb] hover:text-[#6B7FFF] transition-colors duration-200 cursor-pointer">
+              @if (showPassword) {
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+              } @else {
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                </svg>
+              }
+            </button>
+          </div>
+          @if (password.invalid && password.touched) {
+            <div class="mt-1.5 flex items-center gap-1">
+              <div class="w-1 h-1 rounded-full bg-rose-400"></div>
+              <small class="text-[11px] text-rose-400">Password is required</small>
+            </div>
+          }
+        </div>
+
+        @if (loginError) {
+          <div class="flex items-center gap-2 bg-rose-50 dark:bg-rose-500/10 border border-rose-100 dark:border-rose-500/20 rounded-xl px-3.5 py-2.5">
+            <svg class="w-3.5 h-3.5 text-rose-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0zm-9 3.75h.008v.008H12v-.008z"/>
+            </svg>
+            <p class="text-[12px] text-rose-500">{{ loginError }}</p>
+          </div>
+        }
+
+        <label class="flex items-center gap-2.5 cursor-pointer group fade-up delay-4">
+          <div class="relative">
+            <input type="checkbox" class="sr-only peer" formControlName="rememberMe"/>
+            <div class="w-4 h-4 rounded-sm border-2 border-[#D8D8D8] dark:border-[#3a3a5a] peer-checked:bg-[#6B7FFF] peer-checked:border-[#6B7FFF] transition-all duration-150"></div>
+            <svg class="absolute inset-0 w-4 h-4 text-white hidden peer-checked:block p-0.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/>
+            </svg>
+          </div>
+          <span class="text-[13px] text-[#888] dark:text-[#5a5a7a] group-hover:text-[#6B7FFF] transition-colors">Keep me logged in</span>
+        </label>
+
+        <div class="pt-1 space-y-3 fade-up delay-4">
+          <button type="submit"
+            class="w-full py-3.5 rounded-xl bg-[#6B7FFF] text-white text-[14px] font-semibold tracking-wide hover:bg-[#4A5FE0] active:scale-[0.98] shadow-[0_4px_20px_rgba(107,127,255,0.35)] transition-all duration-150 cursor-pointer flex items-center justify-center gap-2 group">
+            Login
+            <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+            </svg>
+          </button>
+          <button type="button" (click)="onCancel()"
+            class="w-full py-3 rounded-xl text-[13px] text-[#999] dark:text-[#5a5a7a] hover:text-[#6B7FFF] hover:bg-[#F0F2FF] dark:hover:bg-[#6B7FFF]/10 active:scale-[0.98] transition-all duration-150 cursor-pointer font-medium">
+            Cancel
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <p class="text-center text-[12px] text-[#BBB] dark:text-[#3a3a5a] mt-8 pb-2 fade-up delay-4">
+      New here?
+      <a routerLink="/signup" class="text-[#6B7FFF] hover:text-[#4A5FE0] font-semibold transition-colors ml-0.5">Create a free account →</a>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,143 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap");
+@import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
+
+* {
+  font-family: "DM Sans", sans-serif;
+}
+
+body {
+  background-color: #F7F8FF;
+  color: #1a1a2e;
+}
+
+body:where(.dark, .dark *) {
+  background-color: #0f0f1a;
+  color: #ffffff;
+}
+
+.font-lora {
+  font-family: "Lora", serif;
+}
+
+.subject-card {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.subject-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(92, 107, 192, 0.15);
+}
+
+.dark .subject-card:hover {
+  box-shadow: 0 12px 32px rgba(107, 127, 255, 0.12);
+}
+
+.subject-card:hover .card-arrow {
+  transform: translateX(3px);
+}
+
+.card-arrow {
+  transition: transform 0.2s ease;
+}
+
+.video-card {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(92, 107, 192, 0.15);
+}
+
+.dark .video-card:hover {
+  box-shadow: 0 12px 32px rgba(107, 127, 255, 0.12);
+}
+
+.video-card:hover .play-overlay {
+  opacity: 1;
+}
+
+.play-overlay {
+  transition: opacity 0.2s ease;
+}
+
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+video {
+  display: block;
+}
+
+.controls-bar {
+  transition: opacity 0.3s ease;
+}
+
+.video-wrapper:hover .controls-bar {
+  opacity: 1;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+}
+
+input[type="range"].volume-slider {
+  width: 70px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.55s ease both;
+}
+.delay-1 {
+  animation-delay: 0.1s;
+}
+.delay-2 {
+  animation-delay: 0.2s;
+}
+.delay-3 {
+  animation-delay: 0.3s;
+}
+.delay-4 {
+  animation-delay: 0.4s;
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.fade-up-card {
+  opacity: 0;
+  animation: fadeUp 0.5s ease forwards;
+}
